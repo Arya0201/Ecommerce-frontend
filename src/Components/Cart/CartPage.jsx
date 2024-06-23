@@ -33,7 +33,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className=" bg-gray-100 py-6">
+    <div className=" py-6">
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-purple-600 mb-8">Your Cart</h1>
         {loading ? (
