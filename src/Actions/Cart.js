@@ -22,6 +22,7 @@ import showToast from '../Utils/toast';
         const payload = {productId:_id, title, price, image,selectedQuentity};
         // console.log(payload)
         const response = await axios.post('http://localhost:5000/carts/', payload, config); // Adjust URL and endpoint as per your API setup
+        
         dispatch({
             type: 'addToCartSuccess',
             payload: response.data.updatedCart // Assuming your API returns data on successful addition

@@ -4,7 +4,7 @@ const initialState = {
     loading: false,
     error: null,
     cartItems: [],
-    cartId: null,
+    // cartId: null,
 };
 
 export const cartReducer = createReducer(initialState, (builder) => {
