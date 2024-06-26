@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,7 +5,7 @@ import { logoutUser } from '../../Actions/User';
 import { ShoppingCart, Store, ExitToApp, AccountBox, Login } from '@mui/icons-material';
 
 const Header = () => {
-    const { isAuthenticated, user } = useSelector((state) => state.user);
+    const { isAuthenticated } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
