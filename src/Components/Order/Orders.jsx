@@ -22,10 +22,11 @@ import {
   Email as EmailIcon,
   ShoppingCart,
 } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: '100vh',
+    minHeight: '92.3vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -75,10 +76,10 @@ const Orders = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (isAuthenticated && orderItems) {
+    if (isAuthenticated && orderItems.length === 0) {
       dispatch(getUserOrder()); // Dispatch the action to fetch user orders
     }
-  }, []);
+  }, [dispatch, isAuthenticated]);
 
   return (
     <div className={classes.root}>
@@ -94,57 +95,71 @@ const Orders = () => {
           <Typography color="textSecondary" align="center">No orders found</Typography>
         ) : (
           orderItems.map((orderArray, index) => (
-            <Paper key={index} className={classes.paper}>
-              <div className={classes.orderDetails}>
-                <Typography variant="h2" className={classes.orderText}>
-                  <Assignment className={classes.icon} /> Order Details
-                </Typography>
-                <Typography className={classes.orderText}>
-                  <strong>Order ID:</strong> {orderArray._id}
-                </Typography>
-                <Typography className={classes.orderText}>
-                  <AttachMoney className={classes.icon} /> <strong>Total Amount:</strong> ${orderArray.paymentIntent.amount.toFixed(2)}
-                </Typography>
-                <Typography className={classes.orderText}>
-                  <ContactPhone className={classes.icon} /> <strong>Contact:</strong> {orderArray.contact}
-                </Typography>
-                <Typography className={classes.orderText}>
-                  <Home className={classes.icon} /> <strong>Address:</strong> {orderArray.address}
-                </Typography>
-                <Typography className={classes.orderText}>
-                  <EmailIcon className={classes.icon} /> <strong>Email:</strong> {orderArray.email}
-                </Typography>
-              </div>
-              <Divider />
-              <div className={classes.orderDetails}>
-                <Typography variant="h3" className={classes.orderText}>
-                  <ShoppingCart className={classes.icon} /> Products
-                </Typography>
-                <List>
-                  {orderArray.products.map((product) => (
-                    <ListItem key={product._id}>
-                      <ListItemAvatar>
-                        <Avatar src={product.productId.image} className={classes.productImage} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={product.productId.title}
-                        secondary={
-                          <>
-                            <Typography component="span" variant="body2" color="textPrimary">
-                              Quantity: {product.quantity}
-                            </Typography>
-                            <br />
-                            <Typography component="span" variant="body2" color="textPrimary">
-                              Price: ${product.productId.price}
-                            </Typography>
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </div>
-            </Paper>
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Paper className={classes.paper}>
+                <div className={classes.orderDetails}>
+                  <Typography variant="h2" className={classes.orderText}>
+                    <Assignment className={classes.icon} /> Order Details
+                  </Typography>
+                  <Typography className={classes.orderText}>
+                    <strong>Order ID:</strong> {orderArray._id}
+                  </Typography>
+                  <Typography className={classes.orderText}>
+                    <AttachMoney className={classes.icon} /> <strong>Total Amount:</strong> ${orderArray.paymentIntent.amount.toFixed(2)}
+                  </Typography>
+                  <Typography className={classes.orderText}>
+                    <ContactPhone className={classes.icon} /> <strong>Contact:</strong> {orderArray.contact}
+                  </Typography>
+                  <Typography className={classes.orderText}>
+                    <Home className={classes.icon} /> <strong>Address:</strong> {orderArray.address}
+                  </Typography>
+                  <Typography className={classes.orderText}>
+                    <EmailIcon className={classes.icon} /> <strong>Email:</strong> {orderArray.email}
+                  </Typography>
+                </div>
+                <Divider />
+                <div className={classes.orderDetails}>
+                  <Typography variant="h3" className={classes.orderText}>
+                    <ShoppingCart className={classes.icon} /> Products
+                  </Typography>
+                  <List>
+                    {orderArray.products.map((product) => (
+                      <motion.div 
+                        key={product._id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar src={product.productId.image} className={classes.productImage} />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={product.productId.title}
+                            secondary={
+                              <>
+                                <Typography component="span" variant="body2" color="textPrimary">
+                                  Quantity: {product.quantity}
+                                </Typography>
+                                <br />
+                                <Typography component="span" variant="body2" color="textPrimary">
+                                  Price: ${product.productId.price}
+                                </Typography>
+                              </>
+                            }
+                          />
+                        </ListItem>
+                      </motion.div>
+                    ))}
+                  </List>
+                </div>
+              </Paper>
+            </motion.div>
           ))
         )}
       </Container>

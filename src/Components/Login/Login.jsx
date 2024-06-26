@@ -1,7 +1,8 @@
-import  {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../Actions/User';
 import { useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +11,6 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { error, loading } = useSelector((state) => state.user);
-
 
     const validate = () => {
         const errors = {};
@@ -33,21 +33,26 @@ const Login = () => {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            dispatch(loginUser(email, password,navigate));
+            dispatch(loginUser(email, password, navigate));
         }
     };
 
-   useEffect(()=>{
-    let user = localStorage.getItem("user")
-    if(user)
-        {
+    useEffect(() => {
+        let user = localStorage.getItem("user");
+        if (user) {
             navigate("/");
         }
-   },[]);
+    }, [navigate]);
 
     return (
         <div className="flex items-center justify-center mt-28">
-            <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
+            <motion.form
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+                onSubmit={handleSubmit}
+            >
                 <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Login</h2>
                 {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
                 <div className="mb-4">
@@ -85,7 +90,7 @@ const Login = () => {
                     Don't have an account?{' '}
                     <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
                 </p>
-            </form>
+            </motion.form>
         </div>
     );
 };

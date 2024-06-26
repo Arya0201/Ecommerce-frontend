@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductById } from '../../Actions/Product';
@@ -6,10 +6,11 @@ import { addToCart } from '../../Actions/Cart';
 import Loading from '../Loader/Loading'; 
 import { Button, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, makeStyles } from '@material-ui/core';
 import { ShoppingCart, Close } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   button: {
-    backgroundColor: '#1f2937', // Vibrant orange
+    backgroundColor: '#1f2937',
     color: '#FFFFFF',
     '&:hover': {
       color:'#fde047',
@@ -17,10 +18,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   modalButton: {
-    backgroundColor: '#03A9F4', // Light blue
+    backgroundColor: '#03A9F4',
     color: '#FFFFFF',
     '&:hover': {
-      backgroundColor: '#29B6F6', // Lighter blue
+      backgroundColor: '#29B6F6',
     },
   },
   select: {
@@ -91,16 +92,29 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <div className="container mx-auto mt-8">
-      <div className="bg-white p-6 rounded-lg ">
+    <motion.div 
+      className="container mx-auto mt-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div 
+        className="bg-white p-6 rounded-lg"
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex items-center justify-center">
+          <motion.div 
+            className="flex items-center justify-center"
+            whileHover={{ scale: 1.1 }}
+          >
             <img 
               src={product.image} 
               alt={product.title} 
-              className="max-w-full h-auto rounded-lg object-contain max-h-96"
+              className="max-w-full h-auto rounded-lg object-contain max-h-96 mr-2"
             />
-          </div>
+          </motion.div>
           <div>
             <h1 className="text-4xl font-bold mb-4 text-gray-800">{product.title}</h1>
             <h2 className="text-2xl font-semibold mb-4 text-gray-600">${product.price}</h2>
@@ -136,7 +150,7 @@ const ProductDetailPage = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Dialog open={showLoginModal} onClose={() => setShowLoginModal(false)}>
         <DialogTitle>Login Required</DialogTitle>
@@ -156,7 +170,7 @@ const ProductDetailPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </motion.div>
   );
 };
 

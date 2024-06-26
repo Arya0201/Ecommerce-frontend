@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCart, removeFromCart, updateCartQuantity } from '../../Actions/Cart'; // Adjust path as per your project structure
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loader/Loading'; 
+import { motion } from 'framer-motion';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-     if (isAuthenticated && cartItems.length==0) {
+     if (isAuthenticated && cartItems.length === 0) {
       dispatch(getCart());
      }
   }, [dispatch, isAuthenticated]);
@@ -33,19 +34,42 @@ const CartPage = () => {
   };
 
   return (
-    <div className=" py-6">
+    <motion.div 
+      className="py-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-800 mb-8">Your Cart</h1>
         {loading ? (
-        <Loading />
+          <Loading />
         ) : error ? (
           <div className="text-center text-red-500">{error}</div>
         ) : cartItems.length === 0 ? (
-          <div className="text-center text-gray-500">No items in cart</div>
+          <motion.div 
+            className="text-center text-gray-500"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            No items in cart
+          </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             {cartItems.map((item) => (
-              <div key={item.productId} className="bg-white shadow-md rounded-lg overflow-hidden">
+              <motion.div 
+                key={item.productId} 
+                className="bg-white shadow-md rounded-lg overflow-hidden"
+                initial={{ x: -100 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">
                   <div className="flex items-center">
                     <img src={item.image} alt={item.title} className="w-20 h-20 object-cover rounded-md mr-4" />
@@ -75,12 +99,17 @@ const CartPage = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
         {cartItems.length > 0 && (
-          <div className="mt-8 flex justify-end">
+          <motion.div 
+            className="mt-8 flex justify-end"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="bg-white shadow-md rounded-lg p-4 w-full md:w-96">
               <h2 className="text-xl font-semibold mb-4">Total Price: ${calculateTotalPrice().toFixed(2)}</h2>
               <button
@@ -90,10 +119,10 @@ const CartPage = () => {
                 Proceed to Checkout
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
