@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import ProductPage from "./Components/Product/ProductPage";
 import Header from "./Components/Header/Header";
@@ -11,7 +11,7 @@ import CartPage from "./Components/Cart/CartPage";
 import CheckOut from "./Components/CheckOut/CheckOut";
 import Orders from "./Components/Order/Orders";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch  } from "react-redux";
 
 function App() {
    const dispatch =useDispatch();

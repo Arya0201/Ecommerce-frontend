@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import  {  useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../Actions/User';
-import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -9,7 +9,8 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated, error, loading } = useSelector((state) => state.user);
+    const { error, loading } = useSelector((state) => state.user);
+
 
     const validate = () => {
         const errors = {};
@@ -36,8 +37,13 @@ const Login = () => {
         }
     };
 
-   
-   
+   useEffect(()=>{
+    let user = localStorage.getItem("user")
+    if(user)
+        {
+            navigate("/");
+        }
+   },[]);
 
     return (
         <div className="flex items-center justify-center mt-28">

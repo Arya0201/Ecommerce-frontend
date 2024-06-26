@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../Actions/User';
 import { Link, useNavigate } from 'react-router-dom';
@@ -42,9 +42,16 @@ const SignUp = () => {
 
         }
     };
+    useEffect(()=>{
+        let user = localStorage.getItem("user")
+        if(user)
+            {
+                navigate("/");
+            }
+       },[]);
 
     return (
-        <div className="flex items-center justify-center ">
+        <div className="flex items-center justify-center  mt-28">
             <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
                 <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Sign Up</h2>
                 {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
