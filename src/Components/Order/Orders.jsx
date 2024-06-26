@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserOrder } from '../../Actions/Order'; // Adjust the path as per your file structure
 import Loading from '../Loader/Loading';
@@ -6,7 +6,6 @@ import {
   Container,
   Paper,
   Typography,
-  Grid,
   List,
   ListItem,
   ListItemText,
@@ -76,10 +75,8 @@ const Orders = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log("hello" , orderItems)
     if (isAuthenticated && orderItems) {
       dispatch(getUserOrder()); // Dispatch the action to fetch user orders
-      console.log("after" , orderItems)
     }
   }, []);
 
