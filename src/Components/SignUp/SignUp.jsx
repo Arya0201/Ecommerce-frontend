@@ -44,7 +44,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex items-center justify-center ">
             <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
                 <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Sign Up</h2>
                 {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
@@ -86,7 +86,7 @@ const SignUp = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full py-3 bg-purple-700 text-white rounded-md font-semibold hover:bg-blue-600 transition duration-300 disabled:opacity-50"
+                    className="w-full py-3 bg-gray-800 text-white rounded-md font-semibold hover:text-yellow-300 transition duration-300 disabled:opacity-50"
                     disabled={loading}
                 >
                     {loading ? 'Signing up...' : 'Sign Up'}

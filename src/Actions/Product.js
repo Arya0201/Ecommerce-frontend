@@ -10,6 +10,7 @@ export const getProducts = () => async (dispatch) => {
 
     const { data } = await axios.get('http://localhost:5000/products/');
 
+
     dispatch({
       type: 'GetProductsSuccess',
       payload: data,
@@ -22,22 +23,30 @@ export const getProducts = () => async (dispatch) => {
   }
 };
 
-export const getProductById = (id) => async (dispatch) => {
+export const getProductById = (id, products) => async (dispatch) => {
   try {
-      dispatch({
-          type: 'GetProductByIdRequest',
-      })
+    dispatch({
+      type: 'GetProductByIdRequest',
+    })    
 
-      const { data } = await axios.get(`http://localhost:5000/products/get/${id}`)
 
+    const product = products.find((product) => product._id === id);
+
+    if (!product) {
       dispatch({
-          type: 'GetProductByIdSuccess',
-          payload: data,
+        type: 'GetProductByIdFailure',
+        payload: "Product not found",
       })
+    }
+
+    dispatch({
+      type: 'GetProductByIdSuccess',
+      payload: product,
+    })
   } catch (error) {
-      dispatch({
-          type: 'GetProductByIdFailure',
-          payload: error.response.data,
-      })
+    dispatch({
+      type: 'GetProductByIdFailure',
+      payload: error.response.data,
+    })
   }
 }

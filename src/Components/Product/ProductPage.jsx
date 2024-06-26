@@ -7,16 +7,23 @@ import ProductCard from './ProductCart';
 import Loading from '../Loader/Loading';
 
 
+
 const ProductPage = () => {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.products);
+  
 
   useEffect(() => {
-    dispatch(getProducts()); // Dispatch action to fetch products on component mount
+    
+    if(products.length==0)
+      {
+        dispatch(getProducts()); 
+      }
+
   }, [dispatch]);
 
   if (loading) {
-    return  <Loading/>// Show loading spinner while fetching data
+    return  <Loading/>
   }
 
   if (error) {

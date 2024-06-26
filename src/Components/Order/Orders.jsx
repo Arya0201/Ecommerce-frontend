@@ -1,58 +1,156 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserOrder } from '../../Actions/Order'; // Adjust the path as per your file structure
-import Loading from '../Loader/Loading'; 
+import Loading from '../Loader/Loading';
+import {
+  Container,
+  Paper,
+  Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Divider,
+  makeStyles
+} from '@material-ui/core';
+import {
+  Assignment,
+  AttachMoney,
+  ContactPhone,
+  Home,
+  Email as EmailIcon,
+  ShoppingCart,
+} from '@mui/icons-material';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F3F4F6', // Light gray background
+    padding: theme.spacing(4),
+  },
+  container: {
+    maxWidth: '900px',
+    width: '100%',
+  },
+  title: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    marginBottom: theme.spacing(4),
+    color: '#1f2937', // Indigo color for title
+  },
+  paper: {
+    padding: theme.spacing(4),
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[3],
+    borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(4),
+  },
+  orderDetails: {
+    marginBottom: theme.spacing(2),
+  },
+  orderText: {
+    marginBottom: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: theme.spacing(1),
+  },
+  productImage: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    objectFit: 'cover',
+    borderRadius: theme.shape.borderRadius,
+  },
+}));
+
 const Orders = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
   const { orderItems, loading, error } = useSelector((state) => state.order);
+  const classes = useStyles();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    console.log("hello" , orderItems)
+    if (isAuthenticated && orderItems) {
       dispatch(getUserOrder()); // Dispatch the action to fetch user orders
+      console.log("after" , orderItems)
     }
-  }, [dispatch, isAuthenticated]);
+  }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
-      <h1 className="text-4xl font-bold mb-10 text-purple-600">Your Orders</h1>
-      <div className="w-full max-w-4xl">
+    <div className={classes.root}>
+      <Container className={classes.container}>
+        <Typography variant="h1" className={classes.title} align="center">
+          Your Orders
+        </Typography>
         {loading ? (
-          <Loading/>
+          <Loading />
         ) : error ? (
-          <div className="text-center text-red-500">{error}</div>
+          <Typography color="error" align="center">{error}</Typography>
         ) : orderItems.length === 0 ? (
-          <div className="text-center text-gray-500">No orders found</div>
+          <Typography color="textSecondary" align="center">No orders found</Typography>
         ) : (
           orderItems.map((orderArray, index) => (
-            <div key={index} className="bg-white shadow-lg rounded-lg mb-6 overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Order Details</h2>
-                <p className="text-gray-600"><span className="font-bold">Order ID:</span> {orderArray._id}</p>
-                <p className="text-gray-600"><span className="font-bold">Total Amount:</span> ${orderArray.paymentIntent.amount.toFixed(2)}</p>
-                <p className="text-gray-600"><span className="font-bold">Contact:</span> {orderArray.contact}</p>
-                <p className="text-gray-600"><span className="font-bold">Address:</span> {orderArray.address}</p>
-                <p className="text-gray-600"><span className="font-bold">Email:</span> {orderArray.email}</p>
-                <div className="mt-4">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Products</h3>
-                  <ul className="space-y-2">
-                    {orderArray.products.map((product) => (
-                      <li key={product._id} className="flex items-center space-x-4">
-                        <img src={product.productId.image} alt={product.productId.title} className="w-16 h-16 object-cover rounded-lg" />
-                        <div>
-                          <h4 className="text-lg font-semibold text-gray-700">{product.productId.title}</h4>
-                          <p className="text-gray-600">Quantity: {product.quantity}</p>
-                          <p className="text-gray-600">Price: ${product.productId.price}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <Paper key={index} className={classes.paper}>
+              <div className={classes.orderDetails}>
+                <Typography variant="h2" className={classes.orderText}>
+                  <Assignment className={classes.icon} /> Order Details
+                </Typography>
+                <Typography className={classes.orderText}>
+                  <strong>Order ID:</strong> {orderArray._id}
+                </Typography>
+                <Typography className={classes.orderText}>
+                  <AttachMoney className={classes.icon} /> <strong>Total Amount:</strong> ${orderArray.paymentIntent.amount.toFixed(2)}
+                </Typography>
+                <Typography className={classes.orderText}>
+                  <ContactPhone className={classes.icon} /> <strong>Contact:</strong> {orderArray.contact}
+                </Typography>
+                <Typography className={classes.orderText}>
+                  <Home className={classes.icon} /> <strong>Address:</strong> {orderArray.address}
+                </Typography>
+                <Typography className={classes.orderText}>
+                  <EmailIcon className={classes.icon} /> <strong>Email:</strong> {orderArray.email}
+                </Typography>
               </div>
-            </div>
+              <Divider />
+              <div className={classes.orderDetails}>
+                <Typography variant="h3" className={classes.orderText}>
+                  <ShoppingCart className={classes.icon} /> Products
+                </Typography>
+                <List>
+                  {orderArray.products.map((product) => (
+                    <ListItem key={product._id}>
+                      <ListItemAvatar>
+                        <Avatar src={product.productId.image} className={classes.productImage} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={product.productId.title}
+                        secondary={
+                          <>
+                            <Typography component="span" variant="body2" color="textPrimary">
+                              Quantity: {product.quantity}
+                            </Typography>
+                            <br />
+                            <Typography component="span" variant="body2" color="textPrimary">
+                              Price: ${product.productId.price}
+                            </Typography>
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+            </Paper>
           ))
         )}
-      </div>
+      </Container>
     </div>
   );
 };

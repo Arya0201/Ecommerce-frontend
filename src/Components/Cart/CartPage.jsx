@@ -11,9 +11,9 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
+     if (isAuthenticated && cartItems.length==0) {
       dispatch(getCart());
-    }
+     }
   }, [dispatch, isAuthenticated]);
 
   const calculateTotalPrice = () => {
@@ -35,7 +35,7 @@ const CartPage = () => {
   return (
     <div className=" py-6">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-purple-600 mb-8">Your Cart</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">Your Cart</h1>
         {loading ? (
         <Loading />
         ) : error ? (
@@ -85,7 +85,7 @@ const CartPage = () => {
               <h2 className="text-xl font-semibold mb-4">Total Price: ${calculateTotalPrice().toFixed(2)}</h2>
               <button
                 onClick={handleCheckout}
-                className="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                className="w-full bg-gray-800 text-white font-bold py-2 rounded-md hover:text-yellow-300 transition duration-300"
               >
                 Proceed to Checkout
               </button>

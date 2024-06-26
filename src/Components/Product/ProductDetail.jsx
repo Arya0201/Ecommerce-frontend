@@ -4,31 +4,64 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProductById } from '../../Actions/Product';
 import { addToCart } from '../../Actions/Cart'; 
 import Loading from '../Loader/Loading'; 
+import { Button, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, makeStyles } from '@material-ui/core';
+import { ShoppingCart, Close } from '@mui/icons-material';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: '#1f2937', // Vibrant orange
+    color: '#FFFFFF',
+    '&:hover': {
+      color:'#fde047',
+      backgroundColor: '#1f2937',
+    },
+  },
+  modalButton: {
+    backgroundColor: '#03A9F4', // Light blue
+    color: '#FFFFFF',
+    '&:hover': {
+      backgroundColor: '#29B6F6', // Lighter blue
+    },
+  },
+  select: {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#FF5722',
+      },
+      '&:hover fieldset': {
+        borderColor: '#FF7043',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#FF7043',
+      },
+    },
+  },
+}));
+
 const ProductDetailPage = () => {
+  const classes = useStyles();
   const { productId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { product, loading, error } = useSelector((state) => state.products);
+  const { product,products, loading, error } = useSelector((state) => state.products);
   const { isAuthenticated } = useSelector((state) => state.user);
-  const [quantity, setQuantity] = useState(1);
-  const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal visibility
+  const [ quantity, setQuantity] = useState(1);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
-    dispatch(getProductById(productId));
+    dispatch(getProductById(productId,products));
   }, [dispatch, productId]);
 
   const handleAddToCart = () => {
     if (isAuthenticated) {
-      console.log(quantity)
       dispatch(addToCart({
         _id: product._id,
         title: product.title,
         price: product.price,
         image: product.image,
-        selectedQuentity: quantity // Assuming quantity is defined in your component
+        selectedQuentity: quantity,
       }, navigate('/cart')));
     } else {
-      // Show login modal or pop-up message
       setShowLoginModal(true);
     }
   };
@@ -38,9 +71,7 @@ const ProductDetailPage = () => {
   };
 
   if (loading) {
-    return (
-     <Loading/>
-    );
+    return <Loading />;
   }
 
   if (error) {
@@ -61,7 +92,7 @@ const ProductDetailPage = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className="bg-white p-6 rounded-lg ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex items-center justify-center">
             <img 
@@ -71,52 +102,60 @@ const ProductDetailPage = () => {
             />
           </div>
           <div>
-            <h1 className="text-4xl font-bold mb-4">{product.title}</h1>
-            <h2 className="text-2xl font-semibold mb-4">${product.price}</h2>
-            <p className="mb-4">{product.desc}</p>
+            <h1 className="text-4xl font-bold mb-4 text-gray-800">{product.title}</h1>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-600">${product.price}</h2>
+            <p className="mb-4 text-gray-700">{product.desc}</p>
             <p className="text-sm text-gray-700 mb-2">Category: {product.categories}</p>
             <p className="text-sm text-gray-700 mb-2">Brand: {product.brand}</p>
             <p className="text-sm text-gray-700 mb-2">Color: {product.color}</p>
             <p className="text-sm text-gray-700 mb-2">Size: {product.size}</p>
             
-            <div className="mt-4">
+            <div className="mt-4 mb-2">
               <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-              <select
+              <Select
                 id="quantity"
                 value={quantity}
                 onChange={handleChangeQuantity}
-                className="block w-20 p-2 border border-gray-300 rounded-md"
+                variant="outlined"
+                className={`${classes.select} w-20`}
               >
                 {[...Array(product.quantity).keys()].map((num) => (
-                  <option key={num + 1} value={num + 1}>{num + 1}</option>
+                  <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
                 ))}
-              </select>
+              </Select>
             </div>
 
-            <button
+            <Button
               onClick={handleAddToCart}
-              className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+              variant="contained"
+              className={`${classes.button} mt-6 bg-gray-800`}
+              startIcon={<ShoppingCart />}
+              fullWidth
             >
               Add to Cart
-            </button>
+            </Button>
           </div>
         </div>
       </div>
 
-      {showLoginModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <p className="text-lg font-semibold mb-4">Login Required</p>
-            <p className="text-sm mb-4">You need to login to add items to your cart.</p>
-            <button
-              onClick={() => setShowLoginModal(false)}
-              className="bg-purple-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <Dialog open={showLoginModal} onClose={() => setShowLoginModal(false)}>
+        <DialogTitle>Login Required</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You need to login to add items to your cart.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setShowLoginModal(false)}
+            variant="contained"
+            className={classes.modalButton}
+            startIcon={<Close />}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

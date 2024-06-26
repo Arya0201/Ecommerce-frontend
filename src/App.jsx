@@ -10,10 +10,22 @@ import SignUp from "./Components/SignUp/SignUp";
 import CartPage from "./Components/Cart/CartPage";
 import CheckOut from "./Components/CheckOut/CheckOut";
 import Orders from "./Components/Order/Orders";
-import Footer from "./Components/Footer/Footer";
-function App() {
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
- 
+function App() {
+   const dispatch =useDispatch();
+   useEffect(()=>{
+    let user=localStorage.getItem('user');
+    if(user)
+      {
+        dispatch({
+          type:"LoadUserSuccess",
+          payload:user
+        })
+      }
+   },[]);
+
     return(
       <Router>
       { <Header />}
