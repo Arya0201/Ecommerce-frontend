@@ -11,7 +11,7 @@ import CartPage from "./Components/Cart/CartPage";
 import CheckOut from "./Components/CheckOut/CheckOut";
 import Orders from "./Components/Order/Orders";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch  } from "react-redux";
 
 function App() {
    const dispatch =useDispatch();
