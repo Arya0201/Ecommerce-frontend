@@ -1,6 +1,8 @@
 import axios from "axios";
 import {deleteCart} from './Cart';
 import showToast from '../Utils/toast';
+import env from '../../API';
+
 
 export const  createOrder = ({email, address,  contact, cartTotal},navigate) => async(dispatch)=>{
    try{
@@ -20,7 +22,9 @@ export const  createOrder = ({email, address,  contact, cartTotal},navigate) => 
         
         const payload ={address, email, contact, cartTotal}
         
-        const response = await axios.post('http://localhost:5000/orders/', payload, config); // Adjust URL and endpoint as per your API setup
+        const response = await axios.post(`${env.API_URL}/orders/`, payload, config); // Adjust URL and endpoint as per your API setup
+
+
         
         dispatch({
             type: 'createOrderSuccess',
@@ -58,7 +62,7 @@ export const  getUserOrder = () => async(dispatch)=>{
          };
          
          
-         const response = await axios.get('http://localhost:5000/orders/user-orders', config); // Adjust URL and endpoint as per your API setup
+         const response = await axios.get(`${env.API_URL}/orders/user-orders`, config); // Adjust URL and endpoint as per your API setup
          
           console.log(response.data[0])
 

@@ -76,7 +76,7 @@ const Orders = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (isAuthenticated && orderItems.length === 0) {
+    if (isAuthenticated) {
       dispatch(getUserOrder()); // Dispatch the action to fetch user orders
     }
   }, [dispatch, isAuthenticated]);

@@ -1,6 +1,8 @@
 // products.js (Actions)
 
 import axios from 'axios';
+import env from '../../API';
+
 
 export const getProducts = () => async (dispatch) => {
   try {
@@ -8,7 +10,7 @@ export const getProducts = () => async (dispatch) => {
       type: 'GetProductsRequest',
     });
 
-    const { data } = await axios.get('http://localhost:5000/products/');
+    const { data } = await axios.get(`${env.API_URL}/products/`);
 
 
     dispatch({

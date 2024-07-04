@@ -1,5 +1,6 @@
 import axios from "axios";
 import showToast from '../Utils/toast';
+import env from '../../API';
 
  export const addToCart =({_id, title, price, image,selectedQuentity},navigate) => async (dispatch) =>{
     try{      
@@ -21,7 +22,7 @@ import showToast from '../Utils/toast';
 
         const payload = {productId:_id, title, price, image,selectedQuentity};
         // console.log(payload)
-        const response = await axios.post('http://localhost:5000/carts/', payload, config); // Adjust URL and endpoint as per your API setup
+        const response = await axios.post(`${env.API_URL}/carts/`, payload, config); // Adjust URL and endpoint as per your API setup
         
         dispatch({
             type: 'addToCartSuccess',
@@ -55,7 +56,7 @@ import showToast from '../Utils/toast';
         };
 
 
-        const response = await axios.get('http://localhost:5000/carts/get-cart', config); // Adjust URL and endpoint as per your API setup
+        const response = await axios.get(`${env.API_URL}/carts/get-cart`, config); // Adjust URL and endpoint as per your API setup
         console.log(response.data)
 
         if (response.data.message === 'Cart not found for this user') {
@@ -92,7 +93,7 @@ import showToast from '../Utils/toast';
             },
         };
 
-        const response = await axios.post('http://localhost:5000/carts/remove-cart-item', { productId }, config);
+        const response = await axios.post(`${env.API_URL}/carts/remove-cart-item`, { productId }, config);
         console.log(response.data);
 
         dispatch({
@@ -123,7 +124,7 @@ export const updateCartQuantity = (productId, quantity) => async (dispatch) => {
             },
         };
 
-        const response = await axios.post('http://localhost:5000/carts/update-cart-item-quantity', { productId, quantity }, config);
+        const response = await axios.post(`${env.API_URL}/carts/update-cart-item-quantity`, { productId, quantity }, config);
         console.log(response.data);
 
         dispatch({
@@ -160,7 +161,7 @@ export const deleteCart = ()=> async(dispatch)=>{
                 'Content-Type': 'application/json',
             },
         };
-        const response = await axios.delete('http://localhost:5000/carts/delete-cart', config);
+        const response = await axios.delete(`${env.API_URL}/carts/delete-cart`, config);
         
         dispatch({
             type:"deleteCartSuccess"

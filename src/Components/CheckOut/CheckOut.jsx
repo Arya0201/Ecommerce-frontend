@@ -192,6 +192,7 @@ const CheckOut = () => {
                     className={classes.input}
                     variant="outlined"
                     required
+                    type='tel'
                     InputProps={{
                       startAdornment: <Phone style={{ marginRight: 8 }} />,
                     }}

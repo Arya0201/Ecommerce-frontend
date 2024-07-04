@@ -2,6 +2,7 @@ import axios from 'axios'
 import { clearCart } from '../Actions/Cart'; 
 import { clearOrder } from '../Actions/Order';
 import showToast from '../Utils/toast';
+import env from '../../API';
 
 export const loginUser = (email, password,navigate) => async (dispatch) => {
     try {
@@ -13,7 +14,7 @@ export const loginUser = (email, password,navigate) => async (dispatch) => {
         console.log('Login Payload:', payload); // Log the payload
 
         const { data } = await axios.post(
-            'http://localhost:5000/auth/login',
+            `${env.API_URL}/auth/login`,
             payload,
             {
                 headers: {
@@ -96,7 +97,7 @@ export const registerUser =  (username, email, password,navigate) => async (disp
             })
 
             const { data } = await axios.post(
-                'http://localhost:5000/auth/register',
+                `${env.API_URL}/auth/register`,
                 { username, email, password },
                 {
                     headers: {
